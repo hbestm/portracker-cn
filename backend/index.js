@@ -625,7 +625,7 @@ app.get("/api/ports", async (req, res) => {
  * New peer-based endpoint to replace remote API connectivity.
  */
 app.get("/api/all-ports", async (req, res) => {
-  const debug = req.query.debug === "true";
+  const debug = req.query.debug === "true" || process.env.DEBUG === 'true';
   if (Object.prototype.hasOwnProperty.call(req.query, 'debug')) logger.setDebugEnabled(debug);
   
   logger.debug(`GET /api/all-ports called with debug=${debug}`);
@@ -699,7 +699,7 @@ async function getLocalPortsUsingCollectors(options = {}) {
  */
 app.get("/api/servers/:id/scan", async (req, res) => {
   const serverId = req.params.id;
-  const currentDebug = req.query.debug === "true";
+  const currentDebug = req.query.debug === "true" || process.env.DEBUG === 'true';
   
   if (Object.prototype.hasOwnProperty.call(req.query, 'debug')) logger.setDebugEnabled(currentDebug);
   

@@ -237,10 +237,11 @@ function detectHostAddresses() {
  * @param {Object|null} uiConfig Discovered UI configuration
  * @param {object} [options={}] - Options object
  * @param {boolean} [options.appDebugEnabled=false] - Whether application-level debug is enabled
+ * @param {boolean} [options.requireSecure=false] - Whether to prioritize secure connections (wss) over insecure (ws)
  * @returns {Array<string>} Array of WebSocket URLs to try
  */
 function generateWebSocketURLs(uiConfig = null, options = {}) {
-  const { appDebugEnabled = false } = options;
+  const { appDebugEnabled = false, requireSecure = false } = options;
   const urls = [];
 
   const explicitBase = process.env.TRUENAS_WS_BASE;
@@ -264,20 +265,42 @@ function generateWebSocketURLs(uiConfig = null, options = {}) {
         uiConfig
       );
     }
-    for (const host of hostAddresses) {
-      if (uiConfig.httpsEnabled && uiConfig.httpsPort) {
-        const url = `wss://${host}:${uiConfig.httpsPort}/websocket`;
-        urls.push(url);
-        if (appDebugEnabled) {
-          debugDiscovery(`Added discovered HTTPS WebSocket: ${url}`);
+    
+    if (requireSecure) {
+      for (const host of hostAddresses) {
+        if (uiConfig.httpsEnabled && uiConfig.httpsPort) {
+          const url = `wss://${host}:${uiConfig.httpsPort}/websocket`;
+          urls.push(url);
+          if (appDebugEnabled) {
+            debugDiscovery(`Added discovered HTTPS WebSocket (secure): ${url}`);
+          }
         }
       }
+      for (const host of hostAddresses) {
+        if (uiConfig.httpPort) {
+          const url = `ws://${host}:${uiConfig.httpPort}/websocket`;
+          urls.push(url);
+          if (appDebugEnabled) {
+            debugDiscovery(`Added discovered HTTP WebSocket (fallback): ${url}`);
+          }
+        }
+      }
+    } else {
+      for (const host of hostAddresses) {
+        if (uiConfig.httpsEnabled && uiConfig.httpsPort) {
+          const url = `wss://${host}:${uiConfig.httpsPort}/websocket`;
+          urls.push(url);
+          if (appDebugEnabled) {
+            debugDiscovery(`Added discovered HTTPS WebSocket: ${url}`);
+          }
+        }
 
-      if (uiConfig.httpPort) {
-        const url = `ws://${host}:${uiConfig.httpPort}/websocket`;
-        urls.push(url);
-        if (appDebugEnabled) {
-          debugDiscovery(`Added discovered HTTP WebSocket: ${url}`);
+        if (uiConfig.httpPort) {
+          const url = `ws://${host}:${uiConfig.httpPort}/websocket`;
+          urls.push(url);
+          if (appDebugEnabled) {
+            debugDiscovery(`Added discovered HTTP WebSocket: ${url}`);
+          }
         }
       }
     }
@@ -287,7 +310,13 @@ function generateWebSocketURLs(uiConfig = null, options = {}) {
     if (appDebugEnabled) {
       debugDiscovery("No UI config discovered, using generic fallback ports");
     }
-    const commonPorts = [
+    
+    const commonPorts = requireSecure ? [
+      { port: 443, protocol: "wss" },
+      { port: 8443, protocol: "wss" },
+      { port: 80, protocol: "ws" },
+      { port: 8080, protocol: "ws" },
+    ] : [
       { port: 443, protocol: "wss" },
       { port: 80, protocol: "ws" },
       { port: 8443, protocol: "wss" },

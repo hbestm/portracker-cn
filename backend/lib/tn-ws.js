@@ -20,9 +20,10 @@ function debugWS(message, ...args) {
  * Get TrueNAS WebSocket URLs to try
  * @param {object} options - Options object
  * @param {boolean} options.appDebugEnabled - Whether application-level debug is enabled
+ * @param {boolean} options.requireSecure - Whether to prioritize secure connections (for API key usage)
  */
 async function getTrueNASWebSocketURLs(options = {}) {
-  const { appDebugEnabled = false } = options;
+  const { appDebugEnabled = false, requireSecure = false } = options;
   try {
     if (appDebugEnabled) {
       debugWS("Attempting to auto-discover TrueNAS UI configuration...");
@@ -39,7 +40,7 @@ async function getTrueNASWebSocketURLs(options = {}) {
       }
     }
 
-    const urls = generateWebSocketURLs(uiConfig, { appDebugEnabled });
+    const urls = generateWebSocketURLs(uiConfig, { appDebugEnabled, requireSecure });
     if (appDebugEnabled) {
       debugWS(`Will try ${urls.length} WebSocket URLs: ${urls.join(", ")}`);
     }
@@ -51,7 +52,7 @@ async function getTrueNASWebSocketURLs(options = {}) {
         `Error during auto-discovery: ${err.message}, using fallback URLs`
       );
     }
-    return generateWebSocketURLs(null, { appDebugEnabled });
+    return generateWebSocketURLs(null, { appDebugEnabled, requireSecure });
   }
 }
 
@@ -77,7 +78,7 @@ async function connectWs(options = {}) {
     throw new Error("No API key provided for WebSocket authentication");
   }
 
-  const urls = await getTrueNASWebSocketURLs({ appDebugEnabled, host, port });
+  const urls = await getTrueNASWebSocketURLs({ appDebugEnabled, host, port, requireSecure: true });
   let ws,
     i = 0;
   let pingInterval = null;

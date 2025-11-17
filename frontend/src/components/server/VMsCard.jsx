@@ -1,9 +1,11 @@
-import { Server, Zap, HardDrive } from "lucide-react";
+import { Server, Zap, HardDrive, Box } from "lucide-react";
 import { formatBytes } from "@/lib/utils";
 
 function VMItem({ vm }) {
-  const isRunning = vm.status && vm.status.toLowerCase() === "running";
+  const status = typeof vm.status === 'string' ? vm.status : (vm.status?.state || 'unknown');
+  const isRunning = status.toLowerCase() === "running";
   const statusColor = isRunning ? "bg-green-500" : "bg-red-500";
+  const isLXC = vm.platform_data?.container_type === "lxc";
 
   return (
     <div className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 hover:shadow-md transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-600">
@@ -11,14 +13,25 @@ function VMItem({ vm }) {
         <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-2">
             <span className={`w-2.5 h-2.5 rounded-full ${statusColor}`}></span>
-            <Server className="h-6 w-6 text-slate-500 dark:text-slate-400" />
+            {isLXC ? (
+              <Box className="h-6 w-6 text-slate-500 dark:text-slate-400" />
+            ) : (
+              <Server className="h-6 w-6 text-slate-500 dark:text-slate-400" />
+            )}
           </div>
           <div>
-            <h4 className="font-medium text-sm text-slate-900 dark:text-slate-100">
-              {vm.name}
-            </h4>
+            <div className="flex items-center space-x-2">
+              <h4 className="font-medium text-sm text-slate-900 dark:text-slate-100">
+                {vm.name}
+              </h4>
+              {isLXC && (
+                <span className="inline-flex items-center px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded text-[10px] font-medium uppercase tracking-wide">
+                  LXC
+                </span>
+              )}
+            </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 capitalize">
-              {vm.status || "Unknown"}
+              {status}
             </p>
           </div>
         </div>

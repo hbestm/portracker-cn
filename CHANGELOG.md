@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Portracker will be documented in this file.
+All notable changes to portracker will be documented in this file.
 
 ## [1.1.0] - 2025-08-23
 

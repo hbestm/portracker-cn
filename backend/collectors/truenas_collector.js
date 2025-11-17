@@ -1217,7 +1217,27 @@ class TrueNASCollector extends BaseCollector {
             this.log(`Collected ${truenasApps.length} TrueNAS native apps`);
           }
           if (enhancedData.vms && enhancedData.vms.length > 0) {
-            results.vms = enhancedData.vms.map((vm) => ({
+            const realVMs = enhancedData.vms.map((vm) => ({
+              type: "vm",
+              id: vm.id,
+              name: vm.name,
+              status: vm.status,
+              vcpus: vm.vcpus,
+              memory: vm.memory,
+              autostart: vm.autostart,
+              platform: "truenas",
+              platform_data: {
+                vnc_enabled: vm.vnc_enabled,
+                vnc_port: vm.vnc_port,
+                devices: vm.devices || [],
+                orig_data: vm,
+              },
+            }));
+            results.vms.push(...realVMs);
+            this.log(`Collected ${realVMs.length} TrueNAS virtual machines`);
+          }
+          if (enhancedData.containers && enhancedData.containers.length > 0) {
+            const lxcContainers = enhancedData.containers.map((vm) => ({
               type: "vm",
               id: vm.id,
               name: vm.name,
@@ -1227,6 +1247,7 @@ class TrueNASCollector extends BaseCollector {
               autostart: vm.autostart,
               platform: "truenas",
               platform_data: {
+                container_type: "lxc",
                 aliases: vm.aliases,
                 image: vm.image,
                 os: vm.image?.os || "unknown",
@@ -1235,7 +1256,8 @@ class TrueNASCollector extends BaseCollector {
                 orig_data: vm,
               },
             }));
-            this.log(`Collected ${results.vms.length} virtual machines`);
+            results.vms.push(...lxcContainers);
+            this.log(`Collected ${lxcContainers.length} TrueNAS LXC containers`);
           }
           this.logInfo("Enhanced features collection completed successfully");
         } catch (err) {
@@ -1766,10 +1788,16 @@ class TrueNASCollector extends BaseCollector {
         );
       }
       try {
-        const vms = await this.client.call("virt.instance.query");
+        const vms = await this.client.call("vm.query");
         results.vms = vms || [];
       } catch (err) {
         this.logWarn("VM API query failed:", err.message.substring(0, 50));
+      }
+      try {
+        const containers = await this.client.call("virt.instance.query");
+        results.containers = containers || [];
+      } catch (err) {
+        this.logWarn("LXC Container API query failed:", err.message.substring(0, 50));
       }
     } catch (err) {
       this.logError(
