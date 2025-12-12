@@ -33,7 +33,7 @@ By auto-discovering services on your systems, portracker provides a live, accura
 - **Enhanced TrueNAS Discovery**: Providing an optional TrueNAS API key allows `portracker` to discover running VMs\* and gather enhanced system information like the OS version and uptime.
 - **Modern & Responsive UI**: A clean dashboard with light/dark modes, live filtering, and multiple data layout views (list, grid, table).
 
-<sub>\*_Note: VMs discovered on TrueNAS with the optional API key are shown in read-only mode. To enable full monitoring, deploy a Portracker instance on each VM and add it as a separate server._</sub>
+<sub>\*_Note: VMs discovered on TrueNAS with the optional API key are shown in read-only mode. To enable full monitoring, deploy a portracker instance on each VM and add it as a separate server._</sub>
 
 ## Deployment
 
@@ -94,7 +94,7 @@ docker run -d \
 
 ### Enhanced Security with Docker Proxy
 
-For enhanced security, you can run Portracker without direct access to the Docker socket by using a proxy. This restricts the Docker API permissions to read-only operations.
+For enhanced security, you can run portracker without direct access to the Docker socket by using a proxy. This restricts the Docker API permissions to read-only operations.
 
 **Using Docker Compose:**
 
@@ -151,7 +151,7 @@ docker run -d \
   -e POST=0 \
   tecnativa/docker-socket-proxy:latest
 
-# Start Portracker
+# Start portracker
 docker run -d \
   --name portracker \
   --restart unless-stopped \
@@ -175,7 +175,7 @@ Configure `portracker` using environment variables.
 | `DATABASE_PATH`\*  | Path inside the container to the SQLite database file. | `/data/portracker.db` |
 | `TRUENAS_API_KEY`  | Optional API key for enhanced TrueNAS data collection. | ` `                   |
 | `ENABLE_AUTH`      | Set to `true` to enable authentication (v1.2.0+).      | `false`               |
-| `SESSION_SECRET`   | Secret key for session encryption (recommended when auth enabled). | _random_  |
+| `SESSION_SECRET`   | Only needed with auth enabled. Prevents logout on container restart. | _random_  |
 | `CACHE_TIMEOUT_MS` | Duration in milliseconds to cache scan results.        | `60000`               |
 | `DISABLE_CACHE`    | Set to `true` to disable all caching.                  | `false`               |
 | `INCLUDE_UDP`      | Set to `true` to include UDP ports in scans.           | `false`               |
@@ -183,14 +183,50 @@ Configure `portracker` using environment variables.
 
 <sub>\*_Required_</sub>
 
+For a complete list of all environment variables with detailed explanations, see [`.env.example`](.env.example).
+
+### TrueNAS Integration
+
+<details>
+<summary><strong>Click to expand TrueNAS setup guide</strong></summary>
+
+#### Getting Your TrueNAS API Key
+
+1. Log into your TrueNAS web interface
+2. Go to **System Settings → API Keys**
+3. Click **Add** to create a new API key
+4. Give it a descriptive name (e.g., "portracker")
+5. Copy the generated key
+6. Add it to portracker:
+   - **TrueNAS Apps**: Edit your portracker app → Add Environment Variable: `TRUENAS_API_KEY=your-api-key-here`
+   - **Docker Compose**: Add to environment section:
+     ```yaml
+     environment:
+       - TRUENAS_API_KEY=your-api-key-here
+     ```
+
+#### What You'll See
+
+With the API key configured, portracker will display:
+- ✅ TrueNAS native apps (from Apps catalog)
+- ✅ Virtual machines (VMs)
+- ✅ LXC containers
+- ✅ Enhanced system information (OS version, uptime, etc.)
+
+Without the API key, you'll only see Docker containers and system ports.
+
+For timeout configuration options, see [`.env.example`](.env.example).
+
+</details>
+
 ### Authentication Setup (v1.2.0+)
 
-Portracker includes optional authentication to secure dashboard access:
+portracker includes optional authentication to secure dashboard access:
 
 1. **Enable Authentication**: Set `ENABLE_AUTH=true` in your environment variables
 2. **First-Time Setup**: On first access, you'll see a setup wizard to create the admin account
 3. **Login**: Use your admin credentials to access the dashboard
-4. **Production Recommendation**: Set a custom `SESSION_SECRET` for secure session management
+4. **Stay Logged In** (optional): Set `SESSION_SECRET` to avoid being logged out on container restart
 
 **Example with Authentication:**
 
