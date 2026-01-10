@@ -55,10 +55,10 @@ export function SetupWizard() {
               </div>
             </div>
             <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
-              Welcome to portracker
+              欢迎使用 portracker
             </h1>
             <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 text-center">
-              Create your admin account to secure your instance
+              创建管理员账户以保护您的实例
             </p>
           </div>
 
@@ -67,10 +67,10 @@ export function SetupWizard() {
               <KeyRound className="w-5 h-5 text-indigo-600 dark:text-indigo-400 mt-0.5 flex-shrink-0" />
               <div>
                 <h3 className="font-semibold text-indigo-900 dark:text-indigo-100 text-sm">
-                  First-Time Setup
+                  首次设置
                 </h3>
                 <p className="text-sm text-indigo-700 dark:text-indigo-300 mt-1">
-                  Choose a strong password. This account will have full access to your portracker instance.
+                  请选择一个强密码。此账户将拥有您 portracker 实例的完全访问权限。
                 </p>
               </div>
             </div>
@@ -78,13 +78,13 @@ export function SetupWizard() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="username" className="text-slate-700 dark:text-slate-300">Admin Username</Label>
+              <Label htmlFor="username" className="text-slate-700 dark:text-slate-300">管理员用户名</Label>
               <Input
                 id="username"
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Admin username"
+                placeholder="管理员用户名"
                 required
                 autoComplete="username"
                 disabled={loading}
@@ -93,22 +93,22 @@ export function SetupWizard() {
               {username && (
                 <p className="text-xs text-slate-500 dark:text-slate-400">
                   {username.length >= 3 ? (
-                    <span className="text-green-600 dark:text-green-400">✓ Valid username</span>
+                    <span className="text-green-600 dark:text-green-400">✓ 有效的用户名</span>
                   ) : (
-                    <span>At least 3 characters required</span>
+                    <span>至少需要3个字符</span>
                   )}
                 </p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-slate-700 dark:text-slate-300">Password</Label>
+              <Label htmlFor="password" className="text-slate-700 dark:text-slate-300">密码</Label>
               <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
+                placeholder="密码"
                 required
                 autoComplete="new-password"
                 disabled={loading}
@@ -117,22 +117,22 @@ export function SetupWizard() {
               {password && (
                 <p className="text-xs text-slate-500 dark:text-slate-400">
                   {password.length >= 8 ? (
-                    <span className="text-green-600 dark:text-green-400">✓ Valid password</span>
+                    <span className="text-green-600 dark:text-green-400">✓ 有效的密码</span>
                   ) : (
-                    <span>At least 8 characters required</span>
+                    <span>至少需要8个字符</span>
                   )}
                 </p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword" className="text-slate-700 dark:text-slate-300">Confirm Password</Label>
+              <Label htmlFor="confirmPassword" className="text-slate-700 dark:text-slate-300">确认密码</Label>
               <Input
                 id="confirmPassword"
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Confirm password"
+                placeholder="确认密码"
                 required
                 autoComplete="new-password"
                 disabled={loading}
@@ -141,9 +141,9 @@ export function SetupWizard() {
               {confirmPassword && (
                 <p className="text-xs">
                   {password === confirmPassword ? (
-                    <span className="text-green-600 dark:text-green-400">✓ Passwords match</span>
+                    <span className="text-green-600 dark:text-green-400">✓ 密码匹配</span>
                   ) : (
-                    <span className="text-red-600 dark:text-red-400">✗ Passwords do not match</span>
+                    <span className="text-red-600 dark:text-red-400">✗ 密码不匹配</span>
                   )}
                 </p>
               )}
@@ -162,7 +162,7 @@ export function SetupWizard() {
               disabled={loading || username.length < 3 || password.length < 8 || password !== confirmPassword}
               className="w-full h-10 bg-indigo-600 hover:bg-indigo-700 text-white"
             >
-              {loading ? 'Creating Account...' : 'Create Admin Account'}
+              {loading ? '创建账户中...' : '创建管理员账户'}
             </Button>
           </form>
 

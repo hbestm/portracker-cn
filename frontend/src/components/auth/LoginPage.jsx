@@ -54,19 +54,19 @@ export function LoginPage() {
               portracker
             </h1>
             <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-              Sign in to continue
+              登录以继续
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="username" className="text-slate-700 dark:text-slate-300">Username</Label>
+              <Label htmlFor="username" className="text-slate-700 dark:text-slate-300">用户名</Label>
               <Input
                 id="username"
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter your username"
+                placeholder="输入您的用户名"
                 required
                 autoComplete="username"
                 disabled={loading}
@@ -75,14 +75,14 @@ export function LoginPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-slate-700 dark:text-slate-300">Password</Label>
+              <Label htmlFor="password" className="text-slate-700 dark:text-slate-300">密码</Label>
               <Input
                 ref={passwordInputRef}
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
+                placeholder="输入您的密码"
                 required
                 autoComplete="current-password"
                 disabled={loading}
@@ -103,7 +103,7 @@ export function LoginPage() {
               disabled={loading || !username || !password}
               className="w-full h-10 bg-indigo-600 hover:bg-indigo-700 text-white"
             >
-              {loading ? 'Signing in...' : 'Sign In'}
+              {loading ? '登录中...' : '登录'}
             </Button>
           </form>
 

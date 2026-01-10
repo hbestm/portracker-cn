@@ -63,7 +63,7 @@ const ServerCard = React.memo(function ServerCard({
   onDelete,
   children,
 }) {
-  const name = server.server || "Unknown Server";
+  const name = server.server || "未知服务器";
   const portCount = server.data?.length || 0;
   const isUpdating = server.ok === null || server.loading;
   const systemInfo = server.systemInfo || {};
@@ -87,7 +87,7 @@ const ServerCard = React.memo(function ServerCard({
     }
   };
 
-  let typeLabel = "Services";
+  let typeLabel = "服务";
   let typeIcon = <Settings className="h-3 w-3 mr-1" />;
   let typeCount = portCount;
   if (server.platform === "docker" || containerCount > 0) {
@@ -130,7 +130,7 @@ const ServerCard = React.memo(function ServerCard({
               onEdit(server.id);
             }}
             className="p-1.5 rounded-md hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400"
-            aria-label="Edit Server"
+            aria-label="编辑服务器"
           >
             <Pencil className="h-4 w-4" />
           </button>
@@ -141,7 +141,7 @@ const ServerCard = React.memo(function ServerCard({
                 onDelete(server);
               }}
               className="p-1.5 rounded-md hover:bg-red-100 dark:hover:bg-red-900/30 text-slate-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-500"
-              aria-label="Delete Server"
+              aria-label="删除服务器"
             >
               <Trash2 className="h-4 w-4" />
             </button>
@@ -165,7 +165,7 @@ const ServerCard = React.memo(function ServerCard({
             >
               <DropdownMenuItem onClick={() => onEdit(server.id)}>
                 <Pencil className="mr-2 h-4 w-4" />
-                <span>Edit</span>
+                <span>编辑</span>
               </DropdownMenuItem>
         
               {server.id !== "local" && (
@@ -174,7 +174,7 @@ const ServerCard = React.memo(function ServerCard({
                   className="text-red-600 focus:text-red-600 dark:text-red-500 dark:focus:text-red-500"
                 >
                   <Trash2 className="mr-2 h-4 w-4" />
-                  <span>Delete</span>
+                  <span>删除</span>
                 </DropdownMenuItem>
               )}
             </DropdownMenuContent>
@@ -272,7 +272,7 @@ export function Sidebar({
     const hasValidFormat =
       /^(https?:\/\/)?[\w-]+(\.[\w-]+)*([:\d]+)?(\/.*)?$/i.test(originalUrl);
     if (!hasValidFormat) {
-      setValidationStatus({ type: "warning", message: "Invalid URL format" });
+      setValidationStatus({ type: "warning", message: "无效的 URL 格式" });
       setUrlValid(false);
       setValidating(false);
       return;
@@ -283,7 +283,7 @@ export function Sidebar({
       setError("");
       setValidationStatus({
         type: "loading",
-        message: "Checking server availability...",
+        message: "检查服务器可用性...",
       });
       let urlForCheck = originalUrl.startsWith("http")
         ? originalUrl
@@ -294,7 +294,7 @@ export function Sidebar({
           setValidating(false);
           setValidationStatus({
             type: "success",
-            message: "URL bypassed (unreachable allowed)",
+            message: "URL 已跳过验证（允许不可达服务器）",
           });
         }
         return;
@@ -313,13 +313,13 @@ export function Sidebar({
             setUrlValid(true);
             setValidationStatus({
               type: "success",
-              message: "Server is reachable",
+              message: "服务器可达",
             });
           } else {
             setUrlValid(false);
             setValidationStatus({
               type: "error",
-              message: `Server responded with ${response.status}`,
+              message: `服务器响应状态：${response.status}`,
             });
           }
           setValidating(false);
@@ -331,12 +331,12 @@ export function Sidebar({
           if (e.name === "AbortError") {
             setValidationStatus({
               type: "error",
-              message: "Connection timeout",
+              message: "连接超时",
             });
           } else {
             setValidationStatus({
               type: "error",
-              message: `Cannot reach server: ${e.message}`,
+              message: `无法连接到服务器：${e.message}`,
             });
           }
         }
@@ -349,12 +349,12 @@ export function Sidebar({
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.label.trim()) {
-      setError("Server name is required");
+      setError("服务器名称不能为空");
       return;
     }
     if (form.type === "peer" && !allowUnreachable && !urlValid) {
       setError(
-        "Please enter a valid, reachable URL or allow unreachable servers"
+        "请输入有效的、可达的 URL，或允许添加不可达服务器"
       );
       return;
     }
@@ -379,22 +379,22 @@ export function Sidebar({
       };
       await onAdd(serverData, mode !== "add");
       setValidationStatus({
-        type: "success",
-        message:
-          mode === "add"
-            ? "Server added successfully!"
-            : "Server updated successfully!",
-      });
+          type: "success",
+          message:
+            mode === "add"
+              ? "服务器添加成功！"
+              : "服务器更新成功！",
+        });
       setTimeout(() => {
         setMode("list");
         setValidationStatus(null);
       }, 1000);
     } catch (e) {
-      setError(e.message || "Failed to save server");
-      setValidationStatus({
-        type: "error",
-        message: e.message || "Operation failed",
-      });
+      setError(e.message || "保存服务器失败");
+        setValidationStatus({
+          type: "error",
+          message: e.message || "操作失败",
+        });
     } finally {
       setSubmitting(false);
     }

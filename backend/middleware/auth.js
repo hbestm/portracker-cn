@@ -41,7 +41,7 @@ function requireAuth(req, res, next) {
 
   logger.debug('Unauthorized access attempt to protected endpoint:', req.path);
   return res.status(401).json({ 
-    error: 'Authentication required',
+    error: '需要认证',
     authEnabled: true 
   });
 }

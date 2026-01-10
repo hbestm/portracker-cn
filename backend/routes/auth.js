@@ -49,28 +49,28 @@ router.get('/status', (req, res) => {
     });
   } catch (error) {
     logger.error('Error checking auth status:', error.message);
-    res.status(500).json({ error: 'Failed to check authentication status' });
+    res.status(500).json({ error: '无法检查认证状态' });
   }
 });
 
 router.post('/setup', async (req, res) => {
   try {
     if (!isAuthEnabled()) {
-      return res.status(400).json({ error: 'Authentication is not enabled' });
+      return res.status(400).json({ error: '未启用认证功能' });
     }
 
     const { username, password } = req.body;
 
     if (!username || !password) {
-      return res.status(400).json({ error: 'Username and password are required' });
+      return res.status(400).json({ error: '用户名和密码不能为空' });
     }
 
     if (typeof username !== 'string' || username.trim().length < 3) {
-      return res.status(400).json({ error: 'Username must be at least 3 characters' });
+      return res.status(400).json({ error: '用户名长度至少为3个字符' });
     }
 
     if (typeof password !== 'string' || password.length < 8) {
-      return res.status(400).json({ error: 'Password must be at least 8 characters' });
+      return res.status(400).json({ error: '密码长度至少为8个字符' });
     }
 
     let userCount;
@@ -78,11 +78,11 @@ router.post('/setup', async (req, res) => {
       userCount = db.prepare('SELECT COUNT(*) as count FROM users').get();
     } catch (dbError) {
       logger.error('Users table does not exist:', dbError.message);
-      return res.status(500).json({ error: 'Database not initialized' });
+      return res.status(500).json({ error: '数据库未初始化' });
     }
 
     if (userCount.count > 0) {
-      return res.status(400).json({ error: 'Setup already completed' });
+      return res.status(400).json({ error: '初始化已完成' });
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
@@ -96,7 +96,7 @@ router.post('/setup', async (req, res) => {
     req.session.regenerate((err) => {
       if (err) {
         logger.error('Session regeneration failed:', err.message);
-        return res.status(500).json({ error: 'Setup failed' });
+        return res.status(500).json({ error: '初始化失败' });
       }
 
       req.session.userId = userId;
@@ -112,14 +112,14 @@ router.post('/setup', async (req, res) => {
 
         res.json({
           success: true,
-          message: 'Setup completed successfully',
+          message: '初始化成功完成',
           username: username.trim()
         });
       });
     });
   } catch (error) {
     logger.error('Error during setup:', error.message);
-    res.status(500).json({ error: 'Setup failed' });
+    res.status(500).json({ error: '初始化失败' });
   }
 });
 
@@ -132,7 +132,7 @@ router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
     if (!username || !password) {
-      return res.status(400).json({ error: 'Username and password are required' });
+      return res.status(400).json({ error: '用户名和密码不能为空' });
     }
 
     const trimmedUsername = typeof username === 'string' ? username.trim() : username;
@@ -145,7 +145,7 @@ router.post('/login', async (req, res) => {
         user = db.prepare('SELECT * FROM users LIMIT 1').get();
       } catch (dbError) {
         logger.error('Database error during recovery:', dbError.message);
-        return res.status(500).json({ error: 'Recovery failed' });
+        return res.status(500).json({ error: '恢复失败' });
       }
 
       if (!user) {
@@ -157,7 +157,7 @@ router.post('/login', async (req, res) => {
       req.session.regenerate((err) => {
         if (err) {
           logger.error('Session regeneration failed:', err.message);
-          return res.status(500).json({ error: 'Recovery failed' });
+          return res.status(500).json({ error: '恢复失败' });
         }
 
         req.session.userId = user.id;
@@ -195,7 +195,7 @@ router.post('/login', async (req, res) => {
 
     if (!user || !isValid) {
       logger.debug(`Failed login attempt for user: ${trimmedUsername}`);
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: '无效的凭据' });
     }
 
     db.prepare('UPDATE users SET last_login = ? WHERE id = ?').run(Date.now(), user.id);
@@ -203,7 +203,7 @@ router.post('/login', async (req, res) => {
     req.session.regenerate((err) => {
       if (err) {
         logger.error('Session regeneration failed:', err.message);
-        return res.status(500).json({ error: 'Login failed' });
+        return res.status(500).json({ error: '登录失败' });
       }
 
       req.session.userId = user.id;

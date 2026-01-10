@@ -36,7 +36,7 @@ const renderHighlightedText = (content) => {
 };
 
 const getDisplayServiceName = (port) => {
-  return port.customServiceName || port.owner || "Unknown Service";
+  return port.customServiceName || port.owner || "未知服务";
 };
 
 function PortCardComponent({
@@ -199,7 +199,7 @@ function PortCardComponent({
                           : getDisplayServiceName(port)}
                       </button>
                     </TooltipTrigger>
-                    <TooltipContent>Open container details</TooltipContent>
+                    <TooltipContent>打开容器详情</TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
               ) : (

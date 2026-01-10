@@ -56,16 +56,16 @@ export function AppHeader({
         activeClass:
           "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300",
         onClick: () => onFilterChange({ ...filters, docker: !filters.docker }),
-        title: filters.docker ? "Disable Docker filter" : "Enable Docker filter",
+        title: filters.docker ? "禁用 Docker 过滤器" : "启用 Docker 过滤器",
       },
       {
         key: "system",
-        label: "System",
+        label: "系统",
         isActive: filters.system,
         activeClass:
           "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300",
         onClick: () => onFilterChange({ ...filters, system: !filters.system }),
-        title: filters.system ? "Disable System filter" : "Enable System filter",
+        title: filters.system ? "禁用系统过滤器" : "启用系统过滤器",
       },
     ],
     [filters, onFilterChange]
@@ -177,7 +177,7 @@ export function AppHeader({
                       <X className="h-4 w-4" />
                     </button>
                   </TooltipTrigger>
-                  <TooltipContent>Clear search</TooltipContent>
+                  <TooltipContent>清除搜索</TooltipContent>
                 </Tooltip>
               )}
             </div>
@@ -197,23 +197,23 @@ export function AppHeader({
                   </Button>
                 </DropdownMenuTrigger>
               </TooltipTrigger>
-              <TooltipContent>Search options</TooltipContent>
+              <TooltipContent>搜索选项</TooltipContent>
             </Tooltip>
             <DropdownMenuContent align="end" className="w-56" onOpenAutoFocus={e => e.preventDefault()}>
               <TooltipProvider delayDuration={500} skipDelayDuration={0}>
-                <div className="px-2 pt-1 pb-2 text-xs text-slate-500">Scope</div>
+                <div className="px-2 pt-1 pb-2 text-xs text-slate-500">范围</div>
                 <DropdownMenuRadioGroup value={searchScope} onValueChange={onSearchScopeChange}>
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <DropdownMenuRadioItem value="server">Server</DropdownMenuRadioItem>
                     </TooltipTrigger>
-                    <TooltipContent>Search only the selected server</TooltipContent>
+                    <TooltipContent>仅搜索选定的服务器</TooltipContent>
                   </Tooltip>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <DropdownMenuRadioItem value="all">Global</DropdownMenuRadioItem>
+                      <DropdownMenuRadioItem value="all">全局</DropdownMenuRadioItem>
                     </TooltipTrigger>
-                    <TooltipContent>Search across all servers</TooltipContent>
+                    <TooltipContent>搜索所有服务器</TooltipContent>
                   </Tooltip>
                 </DropdownMenuRadioGroup>
                 <DropdownMenuSeparator />
@@ -223,10 +223,10 @@ export function AppHeader({
                       checked={!!searchHighlighting}
                       onCheckedChange={(v) => onSearchHighlightingChange(!!v)}
                     >
-                      Highlight
+                      高亮显示
                     </DropdownMenuCheckboxItem>
                   </TooltipTrigger>
-                  <TooltipContent>Highlight matching text in results</TooltipContent>
+                  <TooltipContent>在结果中高亮显示匹配的文本</TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             </DropdownMenuContent>
@@ -268,7 +268,7 @@ export function AppHeader({
                 {refreshIcon}
               </Button>
             </TooltipTrigger>
-            <TooltipContent>{loading ? "Refreshing..." : "Refresh all data"}</TooltipContent>
+            <TooltipContent>{loading ? "刷新中..." : "刷新所有数据"}</TooltipContent>
           </Tooltip>
 
           {onAutoRefreshToggle && (
@@ -286,8 +286,8 @@ export function AppHeader({
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                {autoRefreshEnabled ? "Auto-refresh enabled (30s)" : "Enable auto-refresh"}
-              </TooltipContent>
+                  {autoRefreshEnabled ? "已启用自动刷新 (30s)" : "启用自动刷新"}
+                </TooltipContent>
             </Tooltip>
           )}
 
@@ -311,8 +311,8 @@ export function AppHeader({
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                {hasNewFeatures ? "See what's new!" : "What's new"}
-              </TooltipContent>
+                  {hasNewFeatures ? "查看新功能！" : "新功能"}
+                </TooltipContent>
             </Tooltip>
           )}
 
@@ -331,18 +331,18 @@ export function AppHeader({
                 )}
               </Button>
             </TooltipTrigger>
-            <TooltipContent>{isDarkMode ? "Switch to light mode" : "Switch to dark mode"}</TooltipContent>
+            <TooltipContent>{isDarkMode ? "切换到浅色模式" : "切换到深色模式"}</TooltipContent>
           </Tooltip>
 
           {hackerMode && onDisableHackerMode && (
             <Button
-              variant="outline"
-              size="sm"
-              className="text-emerald-500 border-emerald-500/40 bg-emerald-500/5 hover:bg-emerald-500/10"
-              onClick={onDisableHackerMode}
-            >
-              Exit Hacker Mode
-            </Button>
+                variant="outline"
+                size="sm"
+                className="text-emerald-500 border-emerald-500/40 bg-emerald-500/5 hover:bg-emerald-500/10"
+                onClick={onDisableHackerMode}
+              >
+                退出黑客模式
+              </Button>
           )}
 
           {auth.authEnabled && auth.authenticated && (
@@ -359,7 +359,7 @@ export function AppHeader({
                     </Button>
                   </DropdownMenuTrigger>
                 </TooltipTrigger>
-                <TooltipContent>Account</TooltipContent>
+                <TooltipContent>账户</TooltipContent>
               </Tooltip>
               <DropdownMenuContent align="end" className="w-48">
                 <div className="px-2 py-1.5 text-sm font-medium text-slate-900 dark:text-slate-100">
@@ -368,7 +368,7 @@ export function AppHeader({
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={auth.logout} className="text-red-600 dark:text-red-400">
                   <LogOut className="mr-2 h-4 w-4" />
-                  Logout
+                  退出登录
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

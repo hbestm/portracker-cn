@@ -18,7 +18,7 @@ export function PortActions({
         actionFeedback={actionFeedback}
         onClick={onCopy}
         icon={Copy}
-        title="Copy URL to clipboard"
+        title="复制 URL 到剪贴板"
         size={size}
       />
       <ActionButton
@@ -27,7 +27,7 @@ export function PortActions({
         actionFeedback={actionFeedback}
         onClick={onEdit}
         icon={Edit}
-        title="Edit note"
+        title="编辑备注"
         size={size}
       />
       <ActionButton
@@ -36,7 +36,7 @@ export function PortActions({
         actionFeedback={actionFeedback}
         onClick={onHide}
         icon={port.ignored ? Eye : EyeOff}
-        title={port.ignored ? "Unhide this port" : "Hide this port"}
+        title={port.ignored ? "显示此端口" : "隐藏此端口"}
         size={size}
       />
     </div>

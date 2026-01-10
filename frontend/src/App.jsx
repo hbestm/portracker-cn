@@ -125,8 +125,8 @@ export default function App() {
       pushHealthToast({
         type: "info",
         message: next
-          ? "Hacker mode activated. Use Ctrl+Shift+H to toggle."
-          : "Hacker mode disabled."
+          ? "已激活黑客模式。使用 Ctrl+Shift+H 切换。"
+          : "已禁用黑客模式。"
       });
       return next;
     });
