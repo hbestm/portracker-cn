@@ -1,129 +1,129 @@
 # Changelog
 
-portracker 的所有重大变更将记录在此文件中。
+All notable changes to portracker will be documented in this file.
 
 ## [1.2.2] - 2025-12-12
 
-### 性能与可靠性
+### Performance & Reliability
 
-- **TrueNAS 集成**: 改进了超时处理，采用并行 API 调用、精细的每次调用超时设置和连接重用，以实现可靠的 VM 和容器收集
+- **TrueNAS Integration**: Improved timeout handling with parallel API calls, granular per-call timeouts, and connection reuse for reliable VM and container collection
 
 ## [1.2.1] - 2025-11-21
 
-### 性能与可靠性
+### Performance & Reliability
 
-- **TrueNAS 增强功能**: 修复了在资源受限系统上，VM 和 LXC 容器卡片在自动刷新后消失的问题
+- **TrueNAS Enhanced Features**: Fixed VM and LXC container cards disappearing after auto-refresh on resource-constrained systems
 
 ## [1.2.0] - 2025-11-20
 
-### 安全
+### Security
 
-- **认证**: 使用 `ENABLE_AUTH=true` 启用可选的认证功能，保护仪表板访问
-  - **[sub]** 默认禁用，以保持向后兼容性
-  - **[sub]** 如果您丢失密码，可以通过 `RECOVERY_MODE=true` 访问恢复模式
-  - **[sub]** 当恢复模式启用时，日志中会显示一个限时恢复代码（有效15分钟），可在登录页面与任何用户名一起使用
+- **Authentication**: Optional authentication to secure dashboard access using `ENABLE_AUTH=true`
+  - **[sub]** Disabled by default for backward compatibility
+  - **[sub]** Recovery mode accessible via `RECOVERY_MODE=true` if you lose your password
+  - **[sub]** When recovery mode is enabled, a time-limited recovery code (valid 15 minutes) appears in the logs to use on the login page with any username
 
-### 仪表板
+### Dashboard
 
-- **自动刷新**: 添加了一个切换开关，可每30秒自动刷新端口和服务
-- **随机端口生成器**: 一键生成未使用的端口
+- **Auto-Refresh**: Added a toggle to auto-refresh ports and services every 30 seconds
+- **Random Port Generator**: Generate an unused port with a single click
 
 ## [1.1.1] - 2025-01-17
 
-### 服务器集成
+### Server Integrations
 
-- **TrueNAS 增强功能**: 直接从 UI 添加您的 TrueNAS API 密钥，通过分步设置说明解锁 VM 和 LXC 容器监控
+- **TrueNAS Enhanced Features**: Add your TrueNAS API key directly from the UI to unlock VM and LXC container monitoring with step-by-step setup instructions
 
-### 修复
+### Fixes
 
-- **TrueNAS API 密钥撤销**: 通过优先使用安全的 WebSocket 连接，修复了自动密钥撤销问题
-- **虚拟机和容器**: VM 和 LXC 容器现在正确显示，并带有图标和徽章以区分它们
-- **调试日志**: DEBUG 环境变量现在正确启用调试输出
+- **TrueNAS API Key Revocation**: Fixed automatic key revocation issue by prioritizing secure WebSocket connections
+- **Virtual Machines & Containers**: VMs and LXC containers now display correctly with icons and badges to distinguish between them
+- **Debug Logging**: DEBUG environment variable now properly enables debug output
 
 ## [1.1.0] - 2025-08-23
 
-### 仪表板
+### Dashboard
 
-- **系统端口名称修复**: 修复了系统端口显示为 "unknown" 的问题
-- **一致的状态指示器**: 改进了系统端口的状态指示器，以确保一致性
+- **System Port Name Fix**: Fixed the issue where system ports were incorrectly displayed as "unknown".
+- **Consistent Status Indicators**: Improved status indicators for system ports to ensure consistency.
 
 ## [1.0.8] - 2025-08-20
 
-### 仪表板
+### Dashboard
 
-- **批量重命名迁移修复**: 修复了影响批量重命名操作的迁移问题，使重命名后的服务正确持久化
-- **其他**: 批量重命名流程相关的小迁移修复
+- **Batch rename migration fix**: Fix migration issue affecting batch rename operations so renamed services persist correctly.
+- **Misc.**: minor migration-related fix for batch rename flow.
 
 ## [1.0.7] - 2025-08-19
 
-### 仪表板
+### Dashboard
 
-- **服务重命名**: 允许从 UI 重命名服务
-- **批量操作**: 为服务和端口添加选择和批量操作（忽略、添加注释等）
-- **内部/端口显示修复**: 修复显示问题，使内部端口和发布端口正确显示；修复选择框重叠问题
+- **Service renaming**: Allow renaming services from the UI.
+- **Batch actions**: Add selection and batch operations for services and ports (ignore, add note, etc.).
+- **Internal / Port display fixes**: Fix display issues so internal and published ports are shown correctly; fix select-box overlap.
 
-### 后端
+### Backend
 
-- **端口协议报告**: 确保端口包含协议信息，使报告的映射准确
+- **Port protocol reporting**: Ensure ports include protocol information so reported mappings are accurate.
 
 ## [1.0.6] - 2025-08-15
 
-### 仪表板
+### Dashboard
 
-- **容器详情抽屉**: 新的滑出面板，显示 Docker 容器的详细信息，包括统计数据、标签、挂载和环境变量
-- **内部端口显示**: UI 现在正确显示并区分内部端口和发布端口，并进行健康状态监控
-- **全局搜索**: 搜索栏现在包括一个选项，可以同时搜索所有服务器
-- **新功能通知**: 自动通知系统，在发布新版本时及时了解新功能
+- **Container Details Drawer**: New slide-out panel to show detailed information for Docker containers including stats, labels, mounts, and environment variables
+- **Internal Port Display**: UI now correctly shows and differentiates internal-only ports from published ports with health status monitoring
+- **Global Search**: Search bar now includes an option to search across all servers simultaneously
+- **What's New**: Automatic notification system to stay updated with new features when releasing new versions
 
-### 数据
+### Data
 
-- **收集器缓存**: 为所有数据收集器添加了缓存机制，以减少重复请求并提高数据刷新速度
+- **Collector Caching**: Added caching mechanism to all data collectors to reduce duplicate requests and improve data refresh speed
 
 ## [1.0.5] - 2025-08-09
 
-### 服务器集成
+### Server Integrations
 
-- **Dockerode 集成**: 切换到使用 dockerode 库，通过更可靠的 Docker API 交互代替 shell 命令
-- **集中式日志**: 所有收集器现在使用单个 Logger 类，在整个应用程序中提供一致的结构化日志
+- **Dockerode Integration**: Switched to use the dockerode library for more reliable Docker API interactions instead of shell commands
+- **Centralized Logging**: All collectors now use a single Logger class for consistent and structured logging throughout the application
 
 ## [1.0.4] - 2025-08-09
 
-### 仪表板
+### Dashboard
 
-- **增强的服务检测**: 改进了运行服务的识别和分类，支持单页应用 (SPA) 检测
-- **端口状态指示器**: 添加了不同类型端口（发布端口 vs 内部端口）的清晰视觉区分，并提供详细状态信息
+- **Enhanced Service Detection**: Improved identification and categorization of running services with Single Page Application (SPA) detection support
+- **Port Status Indicators**: Added clear visual distinction between different types of ports (published vs internal) with detailed status information
 
-### 服务器集成
+### Server Integrations
 
-- **移除 network_mode: host 要求**: 通过实现直接的 /proc 文件系统解析，提高了安全性，不再需要 Docker 主机网络模式
-- **高级端口检测**: 增强的系统，使用多种检测方法更准确地识别容器和系统端口
-- **改进的容器检查**: 不同平台的更好错误处理和回退策略，以实现可靠的端口收集
+- **Removed network_mode: host Requirement**: Eliminated the need for Docker host networking mode by implementing direct /proc filesystem parsing for better security
+- **Advanced Port Detection**: Enhanced system for more accurate container and system port identification using multiple detection methods
+- **Improved Container Introspection**: Better error handling and fallback strategies across different platforms for reliable port collection
 
 ## [1.0.3] - 2025-08-07
 
-### 数据
+### Data
 
-- **简化的 Docker 依赖**: 简化了系统要求 - 不再需要挂载额外的系统套接字来获取容器信息，并支持 docker proxy
-- **增强的数据准确性**: 改进了容器信息显示，提供更准确的时间戳和元数据解析
+- **Simplified Docker Dependencies**: Streamlined system requirements - no longer requires mounting additional system sockets for container information and support for docker proxy.
+- **Enhanced Data Accuracy**: Improved container information display with more accurate timestamps and metadata parsing
 
 ## [1.0.2] - 2025-07-11
 
-### 安全
+### Security
 
-- **安全加固**: 解决了关键安全方面的问题
-- **数据收集**: 提高了数据收集的准确性
+- **Security Hardening**: Key security aspects addressed
+- **Data Collection**: Improved data collection accuracy
 
 ## [1.0.1] - 2025-07-10
 
-### 初始改进
+### Initial Improvements
 
-- 初始发布后的各种修复和改进
+- Various fixes and improvements after initial release
 
 ## [1.0.0] - 2025-07-07
 
-### 仪表板
+### Dashboard
 
-- **多平台端口跟踪**: portracker 的初始版本，支持跨多个服务器监控端口
-- **Docker 集成**: 原生 Docker 容器端口监控
-- **Web 界面**: 用于端口管理的简洁、响应式 Web 界面
-- **服务器管理**: 支持多个服务器配置
+- **Multi-platform Port Tracking**: Initial release of portracker with support for monitoring ports across multiple servers
+- **Docker Integration**: Native Docker container port monitoring
+- **Web Interface**: Clean, responsive web interface for port management
+- **Server Management**: Support for multiple server configurations
